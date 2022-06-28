@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch CSVReader",
+            "request": "launch",
+            "mainClass": "tp2.CSVReader",
+            "projectName": "prog3_db8858b9"
+        },
+        {
+            "type": "java",
+            "name": "Launch CSVReader",
+            "request": "launch",
+            "mainClass": "tp.CSVReader",
+            "projectName": "prog3_db8858b9"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}"

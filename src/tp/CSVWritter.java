@@ -14,7 +14,7 @@ public class CSVWritter {
 	public void writebyGenero(Indice i, String nombre) {
 		BufferedWriter bw = null;
 		try {
-			File file = new File("C:/Users/faku_/Desktop/Programacion/TP1/TPE1/src/tp/datasets/salida.csv");
+			File file = new File("C:/Users/faku_/Desktop/Programacion/TP1/prog3/src/tp/datasets/salida.csv");
 			if (!file.exists()) {
 				file.createNewFile();
 			}

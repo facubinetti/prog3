@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 public class CSVReader {
     public static void main(String[] args) {
-        String csvFile = "C:/Users/faku_/Desktop/Programacion/TP1/TPE1/src/tp/dataset4.csv";
+        String csvFile = "C:/Users/faku_/Desktop/Programacion/TP1/prog3/src/tp/dataset4.csv";
         String line = "";
         String cvsSplitBy = ",";
         LinkedList<Libro> listaLibros = new LinkedList<Libro>();
