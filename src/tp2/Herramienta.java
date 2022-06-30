@@ -65,12 +65,12 @@ public class Herramienta {
         this.verticeOrigen = genero; // Complejidad O(n) donde n es la cantidad de vertices
         LinkedList<String> resulta = new LinkedList<String>();
         resulta.add(verticeOrigen);
-        resulta.addAll(greedySecuenciMayor(verticeOrigen));
+        resulta.addAll(SecuenciMayor(verticeOrigen));
 
         return resulta;
     }
 
-    public LinkedList<String> greedySecuenciMayor(String vertice) {
+    public LinkedList<String> SecuenciMayor(String vertice) {
         Iterator<Arco> arcos = grafo.obtenerArcos(vertice);
         LinkedList<String> resulta = new LinkedList<String>();
         LinkedList<Arco> listaArcos = new LinkedList<Arco>();
@@ -86,7 +86,7 @@ public class Herramienta {
                                                                        // origen
                 String auxV = aux.getVerticeDestino();
                 resulta.add(auxV);
-                resulta.addAll(greedySecuenciMayor(auxV));
+                resulta.addAll(SecuenciMayor(auxV));
                 return resulta;
             } else { // si es igual esorigen true y retorno resultado
                 esorigen = true;
@@ -95,6 +95,52 @@ public class Herramienta {
         }
         return null;
     }
+
+    public LinkedList<String> secuencia2 (String origen){
+        this.verticeOrigen = origen;
+        Iterator<String> allVertices = grafo.obtenerVertices();
+        String vertice;
+        // pongo todos los vertices en blanco
+        while (allVertices.hasNext()) {
+            vertice = allVertices.next();
+            colores.put(vertice, "blanco");
+        }
+        LinkedList<String> fila = new LinkedList<String>();
+        secuenciaMayor2(origen,fila);
+        return this.verticesparciales;
+    }
+
+    public void secuenciaMayor2(String origen, LinkedList<String> fila) {
+        colores.put(origen,"amarillo");
+        this.verticesparciales.add(origen);
+        fila.add(origen);
+        boolean esorigen = false;
+        while(!fila.isEmpty() && !esorigen){
+            String aux = fila.removeFirst();
+            Iterator<String> listady = grafo.obtenerAdyacentes(aux);
+            Arco arcomayor = null;
+            String adymayor=null;
+            while (listady.hasNext()){
+                String ady = listady.next();
+                Arco arcoaux = grafo.obtenerArco(aux,ady);
+                
+                if(arcomayor == null || arcoaux.getEtiqueta()>arcomayor.getEtiqueta()){
+                    arcomayor=arcoaux;
+                    adymayor = arcomayor.getVerticeDestino();
+                }
+            }
+            if(colores.get(arcomayor.getVerticeDestino()).equals("blanco")){
+                colores.put(adymayor,"amarillo");
+                this.verticesparciales.add(adymayor);
+                fila.add(adymayor);
+            }else if(!adymayor.equals(this.verticeOrigen)){
+                esorigen = true;
+            }
+        }
+    }
+
+
+
 
     public LinkedList<Arco> ordenarArcos(Iterator<Arco> itArcos) {
         LinkedList<Arco> listaArcos = new LinkedList<Arco>();

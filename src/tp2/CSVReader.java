@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class CSVReader {
     public static void main(String[] args) {
-        String csvFile = "C:/Users/faku_/Desktop/Programacion/TP1/prog3/src/tp2/datasets/dataset.csv";
+        String csvFile = "C:/Users/faku_/Desktop/Programacion/TP1/prog3/src/tp2/datasets/dataset2.csv";
         String line = "";
         String cvsSplitBy = ",";
         Herramienta herramienta = new Herramienta();
@@ -23,8 +23,14 @@ public class CSVReader {
             //     System.out.println(arco);
             // }
 
+            
+            // SERVICIO 2 SECUENCIA MAYOR *SE ROMPE CON EL DATASET 4*;
+            // LinkedList<String> listavertice2 = herramienta.secuencia("poesia");
+            // for (String vertice : listavertice2) {
+            //     System.out.println(vertice.toString());
+            // }
             // SERVICIO 2 SECUENCIA MAYOR
-            LinkedList<String> listavertice2 = herramienta.secuencia("fotografia");
+            LinkedList<String> listavertice2 = herramienta.secuencia2("poesia");
             for (String vertice : listavertice2) {
                 System.out.println(vertice.toString());
             }
