@@ -5,7 +5,7 @@ package tp2;
  * Nota: Para poder exponer los arcos fuera del grafo y que nadie los modifique se hizo esta clase inmutable
  * (Inmutable: una vez creado el arco no es posible cambiarle los valores).
  */
-public class Arco implements Comparable<Arco>{
+public class Arco implements Comparable<Arco> {
     private String verticeDestino;
     private String verticeOrigen;
     private int etiqueta;
@@ -24,7 +24,7 @@ public class Arco implements Comparable<Arco>{
         return verticeDestino;
     }
 
-    public int getEtiqueta() {  
+    public int getEtiqueta() {
         return etiqueta;
     }
 
@@ -60,17 +60,17 @@ public class Arco implements Comparable<Arco>{
                 + "]";
     }
 
-    public void sumEtiqueta(){
+    public void sumEtiqueta() {
         this.etiqueta++;
     }
 
     @Override
     public int compareTo(Arco o) {
-        if(this.etiqueta > o.etiqueta){
+        if (this.etiqueta > o.etiqueta) {
             return -1;
-        }else if (this.etiqueta < o.etiqueta){
+        } else if (this.etiqueta < o.etiqueta) {
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }

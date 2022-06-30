@@ -30,7 +30,7 @@ public class Herramienta {
             } else if (aux != null) {
                 if (grafo.existeArco(aux, vertice)) { // O(n) donde n es el numero de arcos total del grafo
                     Arco auxarco = grafo.obtenerArco(aux, vertice); // O(n) donde n es el numero de arcos total del
-                                                                    // grafo
+                    // grafo
                     auxarco.sumEtiqueta();
                 } else {
                     String verticeaux = grafo.obtenerVertice(vertice); // O(n) donde n es el numero de vertices
@@ -46,16 +46,16 @@ public class Herramienta {
         LinkedList<Arco> listaArcos = new LinkedList<Arco>();
         LinkedList<String> resultado = new LinkedList<String>();
         Iterator<Arco> arcos = grafo.obtenerArcos(genero); // obtengo todos los arcos del vertice // O(n) donde n es el
-                                                           // numero de arcos
+        // numero de arcos
         listaArcos = ordenarArcos(arcos);
 
         int i = 0;
         while (i < n && i < listaArcos.size()) { // recorro la lista ordenada hasta N o hasta que termine la lista
-                                                 // //complejidad O(n) donde n es N enviado por parametro o O(n) donde n
-                                                 // es la cantidad total de arcos
+            // //complejidad O(n) donde n es N enviado por parametro o O(n) donde n
+            // es la cantidad total de arcos
             resultado.add("Genero: " + listaArcos.get(i).getVerticeDestino() + " -- Busquedas: "
                     + listaArcos.get(i).getEtiqueta()); // complejidad O(1) ya que linkedlist tiene guardado su ultimo
-                                                        // elemento
+            // elemento
             i++;
         }
         return resultado;
@@ -79,11 +79,11 @@ public class Herramienta {
             listaArcos = ordenarArcos(arcos); // ordeno arcos de mayor a menor
         }
         while (!listaArcos.isEmpty() && !esorigen) { // recorro la lista ordenada hasta que termine la lista o haya
-                                                     // llegado al origen la complejidad es O(n) donde n es el numero de
-                                                     // arcos del vertice actual
+            // llegado al origen la complejidad es O(n) donde n es el numero de
+            // arcos del vertice actual
             Arco aux = listaArcos.removeFirst(); // tomo el arco mas grande
             if (!aux.getVerticeDestino().equals(this.verticeOrigen)) { // si el vertice actual no es igual al vertie
-                                                                       // origen
+                // origen
                 String auxV = aux.getVerticeDestino();
                 resulta.add(auxV);
                 resulta.addAll(SecuenciMayor(auxV));
@@ -96,7 +96,7 @@ public class Herramienta {
         return null;
     }
 
-    public LinkedList<String> secuencia2 (String origen){
+    public LinkedList<String> secuencia2(String origen) {
         this.verticeOrigen = origen;
         Iterator<String> allVertices = grafo.obtenerVertices();
         String vertice;
@@ -106,47 +106,45 @@ public class Herramienta {
             colores.put(vertice, "blanco");
         }
         LinkedList<String> fila = new LinkedList<String>();
-        secuenciaMayor2(origen,fila);
+        secuenciaMayor2(origen, fila);
         return this.verticesparciales;
     }
 
     public void secuenciaMayor2(String origen, LinkedList<String> fila) {
-        colores.put(origen,"amarillo");
+        colores.put(origen, "amarillo");
         this.verticesparciales.add(origen);
         fila.add(origen);
         boolean esorigen = false;
-        while(!fila.isEmpty() && !esorigen){
+        while (!fila.isEmpty() && !esorigen) {
             String aux = fila.removeFirst();
             Iterator<String> listady = grafo.obtenerAdyacentes(aux);
             Arco arcomayor = null;
-            String adymayor=null;
-            while (listady.hasNext()){
+            String adymayor = null;
+            while (listady.hasNext()) {
                 String ady = listady.next();
-                Arco arcoaux = grafo.obtenerArco(aux,ady);
-                
-                if(arcomayor == null || arcoaux.getEtiqueta()>arcomayor.getEtiqueta()){
-                    arcomayor=arcoaux;
+                Arco arcoaux = grafo.obtenerArco(aux, ady);
+
+                if (arcomayor == null || arcoaux.getEtiqueta() > arcomayor.getEtiqueta()) {
+                    arcomayor = arcoaux;
                     adymayor = arcomayor.getVerticeDestino();
                 }
             }
-            if(colores.get(arcomayor.getVerticeDestino()).equals("blanco")){
-                colores.put(adymayor,"amarillo");
+            if (colores.get(arcomayor.getVerticeDestino()).equals("blanco")) {
+                colores.put(adymayor, "amarillo");
                 this.verticesparciales.add(adymayor);
                 fila.add(adymayor);
-            }else if(!adymayor.equals(this.verticeOrigen)){
+            } else if (!adymayor.equals(this.verticeOrigen)) {
                 esorigen = true;
             }
         }
     }
 
 
-
-
     public LinkedList<Arco> ordenarArcos(Iterator<Arco> itArcos) {
         LinkedList<Arco> listaArcos = new LinkedList<Arco>();
         while (itArcos.hasNext()) { // O(n) donde n es el numero de arcos
             listaArcos.add(itArcos.next()); // los agrego a una lista //Complejidad O(1) ya que linkedlist tiene
-                                            // guardado su ultimo elemento
+            // guardado su ultimo elemento
         }
         Collections.sort(listaArcos); //
 
@@ -175,7 +173,7 @@ public class Herramienta {
             if (this.colores.get(aux).equals("blanco")) { // si no esta visitado llamo recursivamente a dfs
                 dfsGenerar2(aux);
             } else if (this.colores.get(aux).equals("amarillo")) { // si esta visitado y es mi origen, cargo la
-                                                                   // informacion en mi grafo
+                // informacion en mi grafo
                 if (aux.equals(this.verticeOrigen)) {
                     cargarGrafo();
                 }
