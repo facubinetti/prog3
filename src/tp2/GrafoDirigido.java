@@ -1,5 +1,4 @@
 package tp2;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -8,7 +7,6 @@ public class GrafoDirigido<T> implements Grafo<T> {
 
 	private HashSet<String> vertices;
 	private HashSet<Arco> arcos;
-
 	public GrafoDirigido() {
 		this.vertices = new HashSet<String>();
 		this.arcos = new HashSet<Arco>();
@@ -27,11 +25,11 @@ public class GrafoDirigido<T> implements Grafo<T> {
 		Iterator<String> it = this.vertices.iterator();
 		while (it.hasNext() && !deleted) {
 			String next = it.next();
-			if (next == verticeId) {
+			if (next.equals(verticeId)) {
 				Iterator<Arco> itArco = this.arcos.iterator();
 				while (itArco.hasNext()) {
 					Arco arco = itArco.next();
-					if (arco.getVerticeOrigen() == verticeId || arco.getVerticeDestino() == verticeId) {
+					if (arco.getVerticeOrigen().equals(verticeId) || arco.getVerticeDestino().equals(verticeId)) {
 						itArco.remove();
 					}
 				}
@@ -51,7 +49,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 	@Override
 	public void borrarArco(String verticeId1, String verticeId2) {
 		for (Arco arco : this.arcos) {
-			if (arco.getVerticeOrigen() == verticeId1 && arco.getVerticeDestino() == verticeId2) {
+			if (arco.getVerticeOrigen().equals(verticeId1) && arco.getVerticeDestino().equals(verticeId2)) {
 				this.arcos.remove(arco);
 				break;
 			}
@@ -113,7 +111,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 	public Iterator<String> obtenerAdyacentes(String verticeId) {
 		LinkedList<String> resultado = new LinkedList<String>();
 		for (Arco arco : this.arcos) {
-			if (arco.getVerticeOrigen() == verticeId) {
+			if (arco.getVerticeOrigen().equals(verticeId)) {
 				resultado.add(arco.getVerticeDestino());
 			}
 		}
@@ -143,7 +141,7 @@ public class GrafoDirigido<T> implements Grafo<T> {
 	public String toString() {
 		return "GrafoDirigido:\n" + "arcos=" + arcos + "\nvertices=" + vertices;
 	}
-
+	//Complejidad O(n) donde n es la cantidad de vertices
 	public String obtenerVertice(String vertice){
 		for (String v : vertices) {
 			if (vertice.equals(v)){

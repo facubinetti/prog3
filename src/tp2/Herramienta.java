@@ -1,11 +1,21 @@
 package tp2;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Herramienta {
-    GrafoDirigido<String> grafo = new GrafoDirigido<String>();
+    private GrafoDirigido<String> grafo;
+    private HashMap<String, String> colores;
+    private String verticeOrigen;
+    private GrafoDirigido<String> grafoFinal = new GrafoDirigido<String>();
+    private LinkedList<String> verticesparciales = new LinkedList<String>();
+
+    public Herramienta() {
+        this.grafo = new GrafoDirigido<String>();
+        this.colores = new HashMap<String, String>();
+    }
 
     public void crearGrafo(String[] lista) {
         String aux = null;
@@ -31,24 +41,115 @@ public class Herramienta {
         }
     }
 
-    public LinkedList<String> masBuscado (String genero,int n){
-        String vertice = grafo.obtenerVertice(genero);
+    public LinkedList<String> masBuscado(String genero, int n) {
+        // la cantidad de vertices
         LinkedList<Arco> listaArcos = new LinkedList<Arco>();
         LinkedList<String> resultado = new LinkedList<String>();
-        
-            Iterator<Arco> arcos = grafo.obtenerArcos(vertice); //obtengo todos los arcos del vertice
-            while (arcos.hasNext()){
-                listaArcos.add(arcos.next()); // los agrego a una lista
-            }
-            Collections.sort(listaArcos); // ordeno la lista de arcos
-            int i = 0;
-            while (i<n && i<listaArcos.size()){ //recorro la lista ordenada hasta N o hasta que termine la lista
-                // System.out.println(listaArcos.get(i).getVerticeDestino());
-                resultado.add(listaArcos.get(i).getVerticeDestino()+" " +listaArcos.get(i).getEtiqueta());
-                i++; 
-             }
+        Iterator<Arco> arcos = grafo.obtenerArcos(genero); // obtengo todos los arcos del vertice // O(n) donde n es el
+                                                           // numero de arcos
+        listaArcos = ordenarArcos(arcos);
 
-            return resultado;
+        int i = 0;
+        while (i < n && i < listaArcos.size()) { // recorro la lista ordenada hasta N o hasta que termine la lista
+                                                 // //complejidad O(n) donde n es N enviado por parametro o O(n) donde n
+                                                 // es la cantidad total de arcos
+            resultado.add("Genero: " + listaArcos.get(i).getVerticeDestino() + " -- Busquedas: "
+                    + listaArcos.get(i).getEtiqueta()); // complejidad O(1) ya que linkedlist tiene guardado su ultimo
+                                                        // elemento
+            i++;
+        }
+        return resultado;
     }
 
+    public LinkedList<String> secuencia(String genero) {
+        this.verticeOrigen = genero; // Complejidad O(n) donde n es la cantidad de vertices
+        LinkedList<String> resulta = new LinkedList<String>();
+        resulta.add(verticeOrigen);
+        resulta.addAll(greedySecuenciMayor(verticeOrigen));
+
+        return resulta;
+    }
+
+    public LinkedList<String> greedySecuenciMayor(String vertice) {
+        Iterator<Arco> arcos = grafo.obtenerArcos(vertice);
+        LinkedList<String> resulta = new LinkedList<String>();
+        LinkedList<Arco> listaArcos = new LinkedList<Arco>();
+        boolean esorigen = false;
+        if (arcos.hasNext()) {
+            listaArcos = ordenarArcos(arcos); // ordeno arcos de mayor a menor
+        }
+        while (!listaArcos.isEmpty() && !esorigen) { // recorro la lista ordenada hasta que termine la lista o haya
+                                                     // llegado al origen la complejidad es O(n) donde n es el numero de
+                                                     // arcos del vertice actual
+            Arco aux = listaArcos.removeFirst(); // tomo el arco mas grande
+            if (!aux.getVerticeDestino().equals(this.verticeOrigen)) { // si el vertice actual no es igual al vertie
+                                                                       // origen
+                String auxV = aux.getVerticeDestino();
+                resulta.add(auxV);
+                resulta.addAll(greedySecuenciMayor(auxV));
+                return resulta;
+            } else { // si es igual esorigen true y retorno resultado
+                esorigen = true;
+                return resulta;
+            }
+        }
+        return null;
+    }
+
+    public LinkedList<Arco> ordenarArcos(Iterator<Arco> itArcos) {
+        LinkedList<Arco> listaArcos = new LinkedList<Arco>();
+        while (itArcos.hasNext()) { // O(n) donde n es el numero de arcos
+            listaArcos.add(itArcos.next()); // los agrego a una lista //Complejidad O(1) ya que linkedlist tiene
+                                            // guardado su ultimo elemento
+        }
+        Collections.sort(listaArcos); //
+
+        return listaArcos;
+    }
+
+    public GrafoDirigido<String> generarAfines(String origen) {
+        this.verticeOrigen = origen;
+        Iterator<String> allVertices = grafo.obtenerVertices();
+        String vertice;
+        // pongo todos los vertices en blanco
+        while (allVertices.hasNext()) {
+            vertice = allVertices.next();
+            colores.put(vertice, "blanco");
+        }
+        dfsGenerar2(origen);
+        return this.grafoFinal;
+    }
+
+    public void dfsGenerar2(String origen) {
+        this.colores.put(origen, "amarillo"); // marco como vistado
+        verticesparciales.add(origen); // agrego al camino parcial
+        Iterator<String> ady = grafo.obtenerAdyacentes(origen);// obtengo los adyasentes de mi origen
+        while (ady.hasNext()) {// recorro todos mis adyasentes
+            String aux = ady.next();
+            if (this.colores.get(aux).equals("blanco")) { // si no esta visitado llamo recursivamente a dfs
+                dfsGenerar2(aux);
+            } else if (this.colores.get(aux).equals("amarillo")) { // si esta visitado y es mi origen, cargo la
+                                                                   // informacion en mi grafo
+                if (aux.equals(this.verticeOrigen)) {
+                    cargarGrafo();
+                }
+            }
+        }
+        verticesparciales.remove(origen); // remuevo este elemnto de mi camino
+        this.colores.put(origen, "negro");// lo marco en negro para no visitarlo mas
+    }
+
+    public void cargarGrafo() {
+        for (String vertice : verticesparciales) {
+            this.grafoFinal.agregarVertice(vertice);
+            for (String verticedestino : verticesparciales) {
+                if (this.grafo.existeArco(vertice, verticedestino)) {
+                    Arco esteArco = this.grafo.obtenerArco(vertice, verticedestino);
+                    if (!this.grafoFinal.existeArco(vertice, verticedestino)) {
+                        this.grafoFinal.agregarArco(vertice, verticedestino, esteArco.getEtiqueta());
+                    }
+                }
+            }
+        }
+    }
 }

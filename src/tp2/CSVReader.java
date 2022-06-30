@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class CSVReader {
     public static void main(String[] args) {
-        String csvFile = "C:/Users/faku_/Desktop/Programacion/TP1/prog3/src/tp2/datasets/dataset4.csv";
+        String csvFile = "C:/Users/faku_/Desktop/Programacion/TP1/prog3/src/tp2/datasets/dataset.csv";
         String line = "";
         String cvsSplitBy = ",";
         Herramienta herramienta = new Herramienta();
@@ -14,25 +14,28 @@ public class CSVReader {
             br.readLine();
             while ((line = br.readLine()) != null) { // leo una linea 
                 String[] items = line.split(cvsSplitBy); // spliteo la linea y guardo los datos por separado en un array de string
-                // records.add(Arrays.asList(items));
                 herramienta.crearGrafo(items);
-                // ---------------------------------------------
-                // Poner el codigo para cargar los datos
-                // ---------------------------------------------
             }
             
-           //SERVICIO 1 BUSCADOR SIGUIENTEE GENERO MAYOR
-            LinkedList<String> listaArcos = herramienta.masBuscado("informatica", 5);
-            for (String arco : listaArcos) {
-                System.out.println(arco);
+        //    SERVICIO 1 BUSCADOR SIGUIENTEE GENERO MAYOR
+            // LinkedList<String> listavertice = herramienta.masBuscado("informatica", 5);
+            // for (String arco : listavertice) {
+            //     System.out.println(arco);
+            // }
+
+            // SERVICIO 2 SECUENCIA MAYOR
+            LinkedList<String> listavertice2 = herramienta.secuencia("fotografia");
+            for (String vertice : listavertice2) {
+                System.out.println(vertice.toString());
             }
 
-        //    System.out.println(herramienta.grafo.toString());
-            // CSVWritter writter = new CSVWritter();
-   
+            //    System.out.println(herramienta.grafo.toString());
+  
+            //SERVICIO 3 Grafo Afin a genero
+            // GrafoDirigido<String> grafoAfin = new GrafoDirigido<String>();
+            // grafoAfin = herramienta.generarAfines("ficcion");
+		    // System.out.println(grafoAfin.toString());
 
-   
-		    
 
             // CSVWritter csv = new CSVWritter(indice);
             
